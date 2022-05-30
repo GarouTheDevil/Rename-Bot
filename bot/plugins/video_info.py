@@ -32,12 +32,11 @@ async def video_info_handler(c: Client, m: Message):
     await add_user_to_database(c, m)
     if filesystem_free() < 5000000000:
         return await m.reply_text(
-            "Because of less server space I can't do this task right now !!\n\n"
-            "Please try again after some time or use @AHToolsBot to do same task.",
+            "**Cannot Do That**",
             True
         )
     if (not m.reply_to_message) or (len(m.command) == 1):
-        await m.reply_text(f"Reply to video with,\n/{m.command[0]} `--change-title` new title `--change-video-title` new video title `--change-audio-title` new audio title `--change-subtitle-title` new subtitle title `--change-file-name` new file name", True)
+        await m.reply_text(f"Reply To Video As \n/{m.command[0]} `--change-title` New Title `--change-video-title` New Video Title `--change-audio-title` New Audio Title `--change-subtitle-title` New Subtitle Title `--change-file-name` New File Name", True)
         return
     title = None
     video_title = None
@@ -64,7 +63,7 @@ async def video_info_handler(c: Client, m: Message):
     if not file_type.mime_type.startswith("video/"):
         await m.reply_text("This is not a Video!", True)
         return
-    editable = await m.reply_text("Downloading Video ...", quote=True)
+    editable = await m.reply_text("**Downloading ⬇️**", quote=True)
     dl_loc = Config.DOWNLOAD_DIR + "/" + str(m.from_user.id) + "/" + str(m.message_id) + "/"
     root_dl_loc = dl_loc
     if not os.path.isdir(dl_loc):
@@ -75,12 +74,12 @@ async def video_info_handler(c: Client, m: Message):
         file_name=dl_loc,
         progress=progress_for_pyrogram,
         progress_args=(
-            "Downloading ...",
+            "**Downloading ⬇️**",
             editable,
             c_time
         )
     )
-    await editable.edit("Trying to Fetch Media Metadata ...")
+    await editable.edit("**Fetch Media Metadata...⏳**")
     output = await execute(f"ffprobe -hide_banner -show_streams -print_format json {shlex.quote(the_media)}")
     if not output:
         await rm_dir(root_dl_loc)
@@ -102,12 +101,12 @@ async def video_info_handler(c: Client, m: Message):
         if not os.path.isdir(dl_loc):
             os.makedirs(dl_loc)
         middle_cmd += f" {shlex.quote(dl_loc + new_file_name)}"
-        await editable.edit("Please Wait ...\n\nProcessing Video ...")
+        await editable.edit("**Please Wait...⏳**")
         await execute(middle_cmd)
-        await editable.edit("Renamed Successfully!")
+        await editable.edit("**Renamed Successfully**")
     except:
         # Clean Up
-        await editable.edit("Failed to process video!")
+        await editable.edit("**Failed To Process Video**")
         await rm_dir(root_dl_loc)
         return
     try: os.remove(the_media)
