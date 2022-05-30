@@ -9,11 +9,11 @@ from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import FloodWait
 
 PROGRESS = """
-⏳ **Percentage:** `{0}%`
-✅ **Done:** `{1}`
-💠 **Total:** `{2}`
-📶 **Speed:** `{3}/s`
-🕰 **ETA:** `{4}`
+**• Percentage :** {0}%
+**• Done :** {1}
+**• Total :** {2}
+**• Speed :** {3}/s
+**• ETA :** {4}
 """
 
 
@@ -52,7 +52,7 @@ async def progress_for_pyrogram(
             try:
                 _ = message.message_id
                 await message.edit(
-                    text="**{}**\n\n {}".format(
+                    text="**{}**\n {}".format(
                         ud_type,
                         tmp
                     ),
@@ -61,7 +61,7 @@ async def progress_for_pyrogram(
             except AttributeError:
                 await bot.bot.edit_inline_caption(
                     inline_message_id=message.inline_message_id,
-                    caption="**{}**\n\n {}".format(
+                    caption="**{}**\n {}".format(
                         ud_type,
                         tmp
                     ),
