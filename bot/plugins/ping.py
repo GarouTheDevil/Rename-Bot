@@ -13,7 +13,7 @@ async def ping_handler(c: Client, m: "types.Message"):
     await add_user_to_database(c, m)
     await c.send_flooded_message(
         chat_id=m.chat.id,
-        text="**Hi, I am Rename Bot**"
+        text="**Hi, I am Rename Bot**",
         reply_markup=types.InlineKeyboardMarkup([[
            types.InlineKeyboardButton("Settings",
                                       callback_data="showSettings")
